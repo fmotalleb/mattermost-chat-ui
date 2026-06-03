@@ -1,17 +1,42 @@
-$image-width: 53px;
-$post-content-max-width: 540px;
-$post-content-border-radius: 6px;
+// Telegram-inspired Variables
+$post-content-max-width: 45%;
+$post-radius: 14px;
+$post-radius-sharp: 4px;
+$shadow-light: 0 1px 2px rgba(16, 35, 47, 0.12);
+$shadow-dark: 0 1px 2px rgba(0, 0, 0, 0.4);
+
+// Telegram Night Mode Palette (from mobile apps)
+$tg-dark-incoming: #182533;
+$tg-dark-outgoing: #2b5278;
+$tg-dark-link: #6ab2f2;
+$tg-dark-text: #f5f5f5;
+
+// Telegram Light Mode Palette
+$tg-light-incoming: #ffffff;
+$tg-light-outgoing: #eeffde;
+$tg-light-link: #168acd;
+$tg-light-text: #000000;
 
 .post, .post-right__container .post, .ThreadViewer .post {
     .post__content {
-        padding-top: 3px;
-        padding-bottom: 3px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        // Allow hover controls to escape the content box
+        overflow: visible !important;
+        position: relative;
     }
 
     .post__body {
         max-width: $post-content-max-width;
-        padding: 0.4em 0.8em 0.6em !important;
-        border-radius: $post-content-border-radius;
+        padding: 7px 12px 6px !important;
+        line-height: 1.4;
+        font-size: 15px;
+        border: none !important;
+        border-radius: $post-radius $post-radius $post-radius $post-radius-sharp;
+        // Critical: let the hover menu escape the bubble
+        overflow: visible !important;
+        position: relative;
+
         .post-collapse__show-more {
             padding-right: 0;
         }
@@ -20,60 +45,139 @@ $post-content-border-radius: 6px;
     .post__link {
         max-width: $post-content-max-width;
     }
+
+    .post__header {
+        overflow: visible !important;
+        position: relative;
+    }
 }
 
+// --- Hover Controls Fix ---
+// Break the action bar completely out of the bubble flow
+.post {
+    overflow: visible !important;
+    position: relative;
+
+    .col.col__controls {
+        position: absolute !important;
+        left: 0 !important;
+        top: -32px !important;
+        width: auto !important;
+        max-width: none !important;
+        min-width: unset !important;
+        height: auto !important;
+        min-height: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        padding: 2px 4px !important;
+        border-radius: 8px;
+        z-index: 10;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s ease;
+    }
+
+    &:hover .col.col__controls {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    // Ensure individual buttons inside have proper size
+    .col.col__controls button,
+    .col.col__controls .post-menu {
+        width: auto !important;
+        height: 28px !important;
+        min-width: 28px;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .post-menu {
+        position: absolute !important;
+        top: -35px !important;
+        left: 0 !important;
+        right: auto !important;
+        opacity: 1 !important;
+    }
+}
+
+// --- LIGHT THEME ---
 body.mm-chat-ui--light-theme {
     .post:not(.post--system) .post__body {
-        background: rgba(61, 60, 64, 0.04) !important;
-        //box-shadow: 0 2px 2px rgba(160, 172, 182, 0.5);
-        border: 1px solid rgba(160, 172, 182, 0.25);
-    }
-}
-body.mm-chat-ui--dark-theme {
-    .post:not(.post--system) .post__body {
-        background: rgba(255, 255, 255, 0.08) !important;
+        background: $tg-light-incoming !important;
+        color: $tg-light-text;
+        box-shadow: $shadow-light;
+
         a {
-            color: rgb(90, 180, 255);
+            color: $tg-light-link;
         }
     }
-}
 
+    .post.current--user {
+        .post__body {
+            background-color: $tg-light-outgoing !important;
+            border-radius: $post-radius $post-radius $post-radius-sharp $post-radius;
+            align-self: flex-end;
+        }
+    }
 
-// Current user's posts
-body.mm-chat-ui--light-theme .post.current--user .post__body {
-    place-self: flex-end;
-    background-color: rgba(239, 253, 222, .82) !important;
-    //box-shadow: 0 2px 2px rgba(193, 218, 162, .75);
-    border: 1px solid rgba(193,218,162,0.4);
-}
-body.mm-chat-ui--dark-theme .post.current--user .post__body {
-    place-self: flex-end;
-    background-color: rgba(86, 164, 240, .3) !important;
-}
-
-
-// Post Menus
-@media screen and (min-width: 769px) {
-    .post__header .post-menu {
-        top: auto !important;
-        bottom: 2px !important;
-        right: auto;
-        left: calc(#{$image-width} + #{$post-content-max-width} + 1em);
+    .post .col.col__controls {
+        background: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     }
 }
 
+// --- DARK THEME (Telegram Night Mode) ---
+body.mm-chat-ui--dark-theme {
+    .post:not(.post--system) .post__body {
+        background: $tg-dark-incoming !important;
+        color: $tg-dark-text;
+        box-shadow: $shadow-dark;
 
-// Thread Footer
+        a {
+            color: $tg-dark-link;
+        }
+
+        .post__time,
+        .post__header-info {
+            color: rgba($tg-dark-text, 0.5);
+        }
+    }
+
+    .post.current--user {
+        .post__body {
+            background-color: $tg-dark-outgoing !important;
+            border-radius: $post-radius $post-radius $post-radius-sharp $post-radius;
+            align-self: flex-end;
+
+            a {
+                color: lighten($tg-dark-link, 8%);
+            }
+        }
+    }
+
+    .post .col.col__controls {
+        background: #1e2c3a;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+}
+
+// --- Thread Footer ---
 .post__body .ThreadFooter {
     position: unset;
     margin-top: 6px;
     margin-bottom: 0;
+    padding: 4px 8px;
     padding-left: 0;
-    padding-bottom: 0;
 
     .indicator {
         height: unset;
         padding: 0 8px 0 6px;
+        font-size: 12px;
 
         &:empty {
             display: none;
@@ -81,16 +185,31 @@ body.mm-chat-ui--dark-theme .post.current--user .post__body {
     }
 }
 
+// --- OpenGraph / Link Previews ---
+.post .PostAttachmentOpenGraph {
+    border-left: 3px solid $tg-dark-link !important;
+    border-radius: 4px;
+    margin-top: 4px;
+    overflow: hidden;
 
-// OpenGraph Remove Button
-.post .PostAttachmentOpenGraph button.remove-button {
-    top: 2px;
-    right: 2px;
-    left: auto;
+    button.remove-button {
+        top: 4px;
+        right: 4px;
+        left: auto;
+        opacity: 0.4;
+        transition: opacity 0.15s ease;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
 }
 
-
-// HR
+// --- HR ---
 .post__body .post-message__text-container .post-message__text hr {
-    margin: 0.6em 0;
+    margin: 8px 0;
+    border: 0;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.12;
 }
