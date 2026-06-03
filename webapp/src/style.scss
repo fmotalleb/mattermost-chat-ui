@@ -2,7 +2,6 @@ $image-width: 53px;
 $post-content-max-width: 540px;
 $post-content-border-radius: 6px;
 
-
 .post, .post-right__container .post, .ThreadViewer .post {
     .post__content {
         padding-top: 3px;
@@ -13,7 +12,6 @@ $post-content-border-radius: 6px;
         max-width: $post-content-max-width;
         padding: 0.4em 0.8em 0.6em !important;
         border-radius: $post-content-border-radius;
-
         .post-collapse__show-more {
             padding-right: 0;
         }
@@ -43,11 +41,13 @@ body.mm-chat-ui--dark-theme {
 
 // Current user's posts
 body.mm-chat-ui--light-theme .post.current--user .post__body {
+    place-self: flex-end;
     background-color: rgba(239, 253, 222, .82) !important;
     //box-shadow: 0 2px 2px rgba(193, 218, 162, .75);
     border: 1px solid rgba(193,218,162,0.4);
 }
 body.mm-chat-ui--dark-theme .post.current--user .post__body {
+    place-self: flex-end;
     background-color: rgba(86, 164, 240, .3) !important;
 }
 
