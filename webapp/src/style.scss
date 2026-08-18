@@ -24,14 +24,16 @@ $tg-light-text: #000000;
         // Allow hover controls to escape the content box
         overflow: visible !important;
         position: relative;
+        // Anchor width to the row so percentage max-width below has something
+        // to cap against instead of sizing to content.
+        min-width: 0;
+        max-width: 100%;
     }
 
     .post__body {
         max-width: $post-content-max-width;
         width: fit-content;
-        // Match the content's natural size instead of a fixed floor.
-        // (Text bubbles are wider anyway due to padding + line-height.)
-        min-width: fit-content;
+        min-width: 0;
         padding: 7px 12px 6px !important;
         line-height: 1.4;
         font-size: 15px;
@@ -40,6 +42,10 @@ $tg-light-text: #000000;
         // Critical: let the hover menu escape the bubble
         overflow: visible !important;
         position: relative;
+        // Wrap long unbreakable content (URLs, code, tables) inside the bubble
+        // instead of stretching the bubble past the screen edge.
+        overflow-wrap: anywhere;
+        word-break: break-word;
 
         .post-collapse__show-more {
             padding-right: 0;
@@ -77,6 +83,10 @@ $tg-light-text: #000000;
     display: flex !important;
     flex-direction: column;
     align-items: flex-start; // Align content to start
+    // Allow the bubble to shrink below the content's intrinsic width so long
+    // items wrap instead of overflowing the screen.
+    min-width: 0;
+    max-width: 100%;
 
     .col.col__controls {
         position: absolute !important;
@@ -156,6 +166,18 @@ $tg-light-text: #000000;
     width: 100%;
     height: auto;
     display: block;
+}
+
+// --- Long content that must wrap inside the bubble ---
+// Preformatted code keeps `white-space: pre` and would force the bubble wider
+// than the screen; let it wrap instead.
+.post__body pre,
+.post__body .post-code,
+.post__body .post-code__container,
+.post__body code {
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-width: 100%;
 }
 
 // --- LIGHT THEME ---
