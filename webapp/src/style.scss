@@ -29,7 +29,9 @@ $tg-light-text: #000000;
     .post__body {
         max-width: $post-content-max-width;
         width: fit-content;
-        min-width: 300px;
+        // Match the content's natural size instead of a fixed floor.
+        // (Text bubbles are wider anyway due to padding + line-height.)
+        min-width: fit-content;
         padding: 7px 12px 6px !important;
         line-height: 1.4;
         font-size: 15px;
@@ -135,6 +137,25 @@ $tg-light-text: #000000;
 .post__content {
     position: relative;
     display: inline-block; // Fits width to text
+}
+
+// --- Media / Videos ---
+// A video posted without a caption has no text to size the bubble against, so
+// the shrink-to-fit .post__body collapses to 0. Give media containers a real
+// width and an explicit floor so the bubble matches the media's size.
+.post__body .MediaGallery,
+.post__body .fileAttachment,
+.post__body .file-preview,
+.post__body .post-image__column,
+.post__body video {
+    min-width: 300px;
+    max-width: 100%;
+}
+
+.post__body video {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 // --- LIGHT THEME ---
