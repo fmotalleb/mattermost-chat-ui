@@ -1,5 +1,5 @@
 {
-    "id": "ir.quera.mattermost-chat-ui",
+    "id": "net.dornica.mattermost-chat-ui",
     "name": "Mattermost Chat UI",
     "description": "Customizes chat boxes in Mattermost.",
     "version": "1.0.1",
