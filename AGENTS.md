@@ -24,8 +24,8 @@ leftovers that `make` never builds.
 
 ## Go tooling is a trap
 
-- The root `go.mod` still declares the template module name
-  (`github.com/mattermost/mattermost-plugin-starter-template`, go 1.16).
+- The root `go.mod` declares the plugin module name
+  (`github.com/fmotalleb/mattermost-chat-ui`, go 1.26).
 - `go build ./...`, `go test ./...`, or `golangci-lint run ./...` from the repo
   root will walk into `webapp/node_modules/flatted/golang/...` and fail with
   "predeclared any requires go1.18". Do not run broad Go commands at root.
